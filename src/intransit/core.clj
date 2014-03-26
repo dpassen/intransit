@@ -1,5 +1,6 @@
 (ns intransit.core
-  (:require [clojure.xml :as xml]
+  (:require [clojure.string :as str]
+            [clojure.xml :as xml]
             [clojure.zip :as zip]
             [clojure.data.zip.xml :as zxml]
             [clj-time.core :as t]
@@ -66,3 +67,30 @@
         url (format base-url api-key run-number)
         response (zip/xml-zip (xml/parse url))]
     (handle-follows response)))
+
+(defn- handle-position [position]
+  (let [next-station (zxml/xml1-> position :nextStaNm zxml/text)
+        arrival-time (zxml/xml1-> position :arrT zxml/text)]
+    {:next-station next-station
+     :arrival-time (parse-cta-timestamp arrival-time)}))
+
+(defn- handle-route [route]
+  (let [positions (zxml/xml-> route :train)]
+    {(keyword (str/capitalize (zxml/attr route :name)))
+     (into [] (map handle-position positions))}))
+
+(defn- handle-positions [response]
+  (let [common (parse-common-info response)
+        routes (zxml/xml-> response :route)]
+    (merge
+      {:routes (into {} (map handle-route routes))}
+      common)))
+
+(defn positions
+  [api-key & routes]
+  (let [base-url "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx?key=%s&rt="
+        authorized-url (format base-url api-key)
+        params (apply str (interpose "&rt=" (map name routes)))
+        url (str authorized-url params)
+        response (zip/xml-zip (xml/parse url))]
+    (handle-positions response)))
