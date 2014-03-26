@@ -44,3 +44,25 @@
         url (format base-url api-key station-id stop-id (name route))
         response (zip/xml-zip (xml/parse url))]
     (handle-arrivals response)))
+
+(defn- handle-follow [follow]
+  (let [station (zxml/xml1-> follow :staNm zxml/text)
+        arrival-time (zxml/xml1-> follow :arrT zxml/text)
+        destination (zxml/xml1-> follow :destNm zxml/text)]
+    {:station station
+     :arrival-time (parse-cta-timestamp arrival-time)
+     :destination destination}))
+
+(defn- handle-follows [response]
+  (let [common (parse-common-info response)
+        follows (zxml/xml-> response :eta)]
+    (merge
+      {:follows (into [] (map handle-follow follows))}
+      common)))
+
+(defn follow
+  [api-key run-number]
+  (let [base-url "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx?key=%s&runnumber=%s"
+        url (format base-url api-key run-number)
+        response (zip/xml-zip (xml/parse url))]
+    (handle-follows response)))
