@@ -31,9 +31,9 @@
      :route route
      :destination destination}))
 
-(defn- handle-arrivals [response]
-  (let [common (parse-common-info response)
-        arrivals (zxml/xml-> response :eta)]
+(defn- handle-arrivals [arrivals]
+  (let [common (parse-common-info arrivals)
+        arrivals (zxml/xml-> arrivals :eta)]
     (merge
       {:arrivals (into [] (map handle-arrival arrivals))}
       common)))
@@ -54,9 +54,9 @@
      :arrival-time (parse-cta-timestamp arrival-time)
      :destination destination}))
 
-(defn- handle-follows [response]
-  (let [common (parse-common-info response)
-        follows (zxml/xml-> response :eta)]
+(defn- handle-follows [follows]
+  (let [common (parse-common-info follows)
+        follows (zxml/xml-> follows :eta)]
     (merge
       {:follows (into [] (map handle-follow follows))}
       common)))
@@ -79,9 +79,9 @@
     {(keyword (str/capitalize (zxml/attr route :name)))
      (into [] (map handle-position positions))}))
 
-(defn- handle-positions [response]
-  (let [common (parse-common-info response)
-        routes (zxml/xml-> response :route)]
+(defn- handle-positions [positions]
+  (let [common (parse-common-info positions)
+        routes (zxml/xml-> positions :route)]
     (merge
       {:routes (into {} (map handle-route routes))}
       common)))
