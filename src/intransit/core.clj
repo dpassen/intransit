@@ -25,11 +25,13 @@
   (let [station (zxml/xml1-> arrival :staNm zxml/text)
         arrival-time (zxml/xml1-> arrival :arrT zxml/text)
         route (zxml/xml1-> arrival :rt zxml/text)
-        destination (zxml/xml1-> arrival :destNm zxml/text)]
+        destination (zxml/xml1-> arrival :destNm zxml/text)
+        run-number (zxml/xml1-> arrival :rn zxml/text)]
     {:station station
      :arrival-time (parse-cta-timestamp arrival-time)
      :route route
-     :destination destination}))
+     :destination destination
+     :run-number run-number}))
 
 (defn- handle-arrivals [arrivals]
   (let [common (parse-common-info arrivals)
@@ -70,9 +72,13 @@
 
 (defn- handle-position [position]
   (let [next-station (zxml/xml1-> position :nextStaNm zxml/text)
-        arrival-time (zxml/xml1-> position :arrT zxml/text)]
+        arrival-time (zxml/xml1-> position :arrT zxml/text)
+        destination (zxml/xml1-> position :destNm zxml/text)
+        run-number (zxml/xml1-> position :rn zxml/text)]
     {:next-station next-station
-     :arrival-time (parse-cta-timestamp arrival-time)}))
+     :arrival-time (parse-cta-timestamp arrival-time)
+     :destination destination
+     :run-number run-number}))
 
 (defn- handle-route [route]
   (let [positions (zxml/xml-> route :train)]
