@@ -39,10 +39,10 @@
       common)))
 
 (defn arrivals
-  [api-key & {:keys [station-id stop-id route]
-              :or {station-id "" stop-id "" route ""}}]
-  (let [base-url "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=%s&mapid=%s&stpid=%s&rt=%s"
-        url (format base-url api-key station-id stop-id (name route))
+  [api-key & {:keys [station-id stop-id route max-results]
+              :or {station-id "" stop-id "" route "" max-results ""}}]
+  (let [base-url "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=%s&mapid=%s&stpid=%s&rt=%s&max=%s"
+        url (format base-url api-key station-id stop-id (name route) max-results)
         response (zip/xml-zip (xml/parse url))]
     (handle-arrivals response)))
 
