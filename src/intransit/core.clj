@@ -1,10 +1,10 @@
 (ns intransit.core
-  (:require [clojure.string :as str]
-            [clojure.xml :as xml]
-            [clojure.zip :as zip]
+  (:require [clojure.string       :as str]
+            [clojure.xml          :as xml]
+            [clojure.zip          :as zip]
             [clojure.data.zip.xml :as zxml]
-            [clj-time.core :as t]
-            [clj-time.format :as f]))
+            [clj-time.core        :as t]
+            [clj-time.format      :as f]))
 
 (defn- parse-cta-timestamp [ts]
   (f/parse
