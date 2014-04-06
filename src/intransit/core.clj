@@ -38,7 +38,7 @@
         arrivals (zxml/xml-> arrivals :eta)]
     (assoc
       common
-      :arrivals (into [] (map handle-arrival arrivals)))))
+      :arrivals (mapv handle-arrival arrivals))))
 
 (defn arrivals
   [api-key & {:keys [station-id stop-id route max-results]
@@ -61,7 +61,7 @@
         follows (zxml/xml-> follows :eta)]
     (assoc
       common
-      :follows (into [] (map handle-follow follows)))))
+      :follows (mapv handle-follow follows))))
 
 (defn follow
   [api-key run-number]
@@ -83,7 +83,7 @@
 (defn- handle-route [route]
   (let [positions (zxml/xml-> route :train)]
     {(keyword (str/capitalize (zxml/attr route :name)))
-     (into [] (map handle-position positions))}))
+     (mapv handle-position positions)}))
 
 (defn- handle-positions [positions]
   (let [common (parse-common-info positions)
