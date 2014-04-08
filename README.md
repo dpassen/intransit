@@ -34,10 +34,10 @@ Consider using the following:
 
 (def my-arrivals (partial arrivals api-key)
 (my-arrivals :station-id station-id)
-;;etc.
+;; etc.
 ```
 
-Or, using [fidjet](https://github.com/aredington/fidjet).
+Or, using [Fidjet](https://github.com/aredington/fidjet).
 ```clojure
 (ns intransit.configured
   (:require [intransit.core :as i]
