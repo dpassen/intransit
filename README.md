@@ -2,6 +2,10 @@
 
 A Clojure library designed to aid in retrieving data from the CTA API
 
+## Latest version
+intransit is deployed to [Clojars](https://clojars.org)  
+![Latest version](https://clojars.org/intransit/latest-version.svg)
+
 ## Usage
 Note: I recommend using [Environ](https://github.com/weavejester/environ) so as not to store your api-key in your code.
 
