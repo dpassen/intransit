@@ -44,7 +44,7 @@ Consider using the following:
 Or, using [Fidjet](https://github.com/aredington/fidjet).
 ```clojure
 (ns intransit.configured
-  (:require [intransit.core :as i]
+  (:require [intransit.core]
             [fidjet.core :as f]))
 
 (f/remap-ns-with-arg intransit.core api-key)
