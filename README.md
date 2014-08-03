@@ -7,7 +7,7 @@ intransit is deployed to [Clojars](https://clojars.org)
 [![Clojars Project](http://clojars.org/intransit/latest-version.svg)](http://clojars.org/intransit)
 
 ## Usage
-Note: I recommend using [Environ](https://github.com/weavejester/environ) so as not to store your api-key in your code.
+Note: I recommend using [Environ](https://github.com/weavejester/environ) so as not to store your api-key in your code
 
 ```clojure
 (require '[intransit.core :as intransit])
@@ -41,7 +41,7 @@ Consider using the following:
 ;; etc.
 ```
 
-Or, using [Fidjet](https://github.com/aredington/fidjet).
+Or, using [Fidjet](https://github.com/aredington/fidjet):
 ```clojure
 (ns intransit.configured
   (:require [intransit.core]
