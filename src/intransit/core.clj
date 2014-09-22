@@ -96,7 +96,7 @@
   [api-key & routes]
   (let [base-url       "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx?key=%s&rt="
         authorized-url (format base-url api-key)
-        params         (apply str (interpose "&rt=" (map (comp str/capitalize name) routes)))
+        params         (str/join "&rt=" (map (comp str/capitalize name) routes))
         url            (str authorized-url params)
         response       (zip/xml-zip (xml/parse url))]
     (handle-positions response)))
