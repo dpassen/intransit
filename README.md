@@ -36,7 +36,7 @@ Consider using the following:
 ```clojure
 (require '[intransit.core :as intransit])
 
-(def my-arrivals (partial arrivals api-key)
+(def my-arrivals (partial intransit/arrivals api-key)
 (my-arrivals :station-id station-id)
 ;; etc.
 ```
