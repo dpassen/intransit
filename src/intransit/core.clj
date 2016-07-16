@@ -1,102 +1,103 @@
 (ns intransit.core
-  (:require [clojure.string       :as str]
-            [clojure.xml          :as xml]
-            [clojure.zip          :as zip]
-            [clojure.data.zip.xml :as zxml]
-            [clj-time.core        :as t]
-            [clj-time.format      :as f]))
+  (:require
+   [clj-http.client   :as http]
+   [clojure.data.json :as json]
+   [clojure.set       :as set]
+   [clojure.string    :as str]
+   [java-time]))
 
-(defn- parse-cta-timestamp [ts]
-  (f/parse
-    (f/with-zone
-      (f/formatter "yyyyMMdd HH:mm:ss")
-      (t/time-zone-for-id "America/Chicago"))
-    ts))
+(def ^:private json "JSON")
 
-(defn- parse-common-info [response]
-  (let [error-code    (zxml/xml1-> response :errCd zxml/text)
-        error-message (zxml/xml1-> response :errNm zxml/text)
-        timestamp     (zxml/xml1-> response :tmst  zxml/text)]
-    {:error-code    (Long/parseLong error-code)
-     :error-message error-message
-     :timestamp     (parse-cta-timestamp timestamp)}))
+(defn- parse-cta-timestamp
+  [ts]
+  (java-time/zoned-date-time
+   (java-time/local-date-time "yyyy-MM-dd'T'HH:mm:ss" ts)
+   "America/Chicago"))
 
-(defn- handle-arrival [arrival]
-  (let [station      (zxml/xml1-> arrival :staNm  zxml/text)
-        arrival-time (zxml/xml1-> arrival :arrT   zxml/text)
-        route        (zxml/xml1-> arrival :rt     zxml/text)
-        destination  (zxml/xml1-> arrival :destNm zxml/text)
-        run-number   (zxml/xml1-> arrival :rn     zxml/text)]
-    {:station      station
-     :arrival-time (parse-cta-timestamp arrival-time)
-     :route        route
-     :destination  destination
-     :run-number   run-number}))
+(defn- parse-common
+  [{:keys [body]}]
+  (-> body
+      (json/read-str :key-fn keyword)
+      :ctatt
+      (dissoc :TimeStamp)
+      (set/rename-keys {:errCd :error-code
+                        :errNm :error-message
+                        :tmst  :timestamp})
+      (update :error-code #(Long. %))
+      (update :timestamp parse-cta-timestamp)))
 
-(defn- handle-arrivals [arrivals]
-  (let [common   (parse-common-info arrivals)
-        arrivals (zxml/xml-> arrivals :eta)]
-    (assoc
-      common
-      :arrivals (mapv handle-arrival arrivals))))
+(defn- handle-arrival
+  [arrival]
+  (-> arrival
+      (select-keys [:staNm :arrT :rt :destNm :rn])
+      (set/rename-keys {:staNm  :station
+                        :arrT   :arrival-time
+                        :rt     :route
+                        :destNm :destination
+                        :rn     :run-number})
+      (update :arrival-time parse-cta-timestamp)
+      (update :run-number #(Long. %))))
 
 (defn arrivals
-  [api-key & {:keys [station-id stop-id route max-results]
-              :or {station-id "" stop-id "" route "" max-results ""}}]
-  (let [base-url "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?key=%s&mapid=%s&stpid=%s&rt=%s&max=%s"
-        url      (format base-url api-key station-id stop-id (name route) max-results)
-        response (zip/xml-zip (xml/parse url))]
-    (handle-arrivals response)))
+  [api-key & {:keys [station-id stop-id route max-results]}]
+  (-> "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
+      (http/get {:query-params {:key        api-key
+                                :mapid      station-id
+                                :stpid      stop-id
+                                :rt         (cond-> route (some? route) name)
+                                :max        max-results
+                                :outputType json}})
+      parse-common
+      (set/rename-keys {:eta :arrivals})
+      (update :arrivals (partial map handle-arrival))))
 
-(defn- handle-follow [follow]
-  (let [station      (zxml/xml1-> follow :staNm  zxml/text)
-        arrival-time (zxml/xml1-> follow :arrT   zxml/text)
-        destination  (zxml/xml1-> follow :destNm zxml/text)]
-    {:station      station
-     :arrival-time (parse-cta-timestamp arrival-time)
-     :destination  destination}))
-
-(defn- handle-follows [follows]
-  (let [common  (parse-common-info follows)
-        follows (zxml/xml-> follows :eta)]
-    (assoc
-      common
-      :follows (mapv handle-follow follows))))
+(defn- handle-follow
+  [follow]
+  (-> follow
+      (select-keys [:staNm :arrT :destNm])
+      (set/rename-keys {:staNm  :station
+                        :arrT   :arrival-time
+                        :destNm :destination})
+      (update :arrival-time parse-cta-timestamp)))
 
 (defn follow
-  [api-key run-number]
-  (let [base-url "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx?key=%s&runnumber=%s"
-        url      (format base-url api-key run-number)
-        response (zip/xml-zip (xml/parse url))]
-    (handle-follows response)))
+  [api-key {:keys [run-number]}]
+  (-> "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx"
+      (http/get {:query-params {:key        api-key
+                                :runnumber  run-number
+                                :outputType json}})
+      parse-common
+      (dissoc :position)
+      (set/rename-keys {:eta :follows})
+      (update :follows (partial map handle-follow))))
 
-(defn- handle-position [position]
-  (let [next-station (zxml/xml1-> position :nextStaNm zxml/text)
-        arrival-time (zxml/xml1-> position :arrT      zxml/text)
-        destination  (zxml/xml1-> position :destNm    zxml/text)
-        run-number   (zxml/xml1-> position :rn        zxml/text)]
-    {:next-station next-station
-     :arrival-time (parse-cta-timestamp arrival-time)
-     :destination  destination
-     :run-number   run-number}))
+(defn- handle-position
+  [position]
+  (-> position
+      (select-keys [:nextStaNm :arrT :destNm :rn])
+      (set/rename-keys {:nextStaNm :next-station
+                        :arrT      :arrival-time
+                        :destNm    :destination
+                        :rn        :run-number})
+      (update :arrival-time parse-cta-timestamp)
+      (update :run-number #(Long. %))))
 
-(defn- handle-route [route]
-  (let [positions (zxml/xml-> route :train)]
-    {(keyword (str/capitalize (zxml/attr route :name)))
-     (mapv handle-position positions)}))
-
-(defn- handle-positions [positions]
-  (let [common (parse-common-info positions)
-        routes (zxml/xml-> positions :route)]
-    (assoc
-      common
-      :routes (into {} (map handle-route routes)))))
+(defn- handle-route
+  [{:keys [train] :as route}]
+  (let [positions (flatten (vector train))]
+    (-> "@name"
+        keyword
+        route
+        str/capitalize
+        keyword
+        (vector (map handle-position positions)))))
 
 (defn positions
   [api-key & routes]
-  (let [base-url       "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx?key=%s&rt="
-        authorized-url (format base-url api-key)
-        params         (str/join "&rt=" (map (comp str/capitalize name) routes))
-        url            (str authorized-url params)
-        response       (zip/xml-zip (xml/parse url))]
-    (handle-positions response)))
+  (-> "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx"
+      (http/get {:query-params {:key        api-key
+                                :rt         (map name routes)
+                                :outputType json}})
+      parse-common
+      (set/rename-keys {:route :routes})
+      (update :routes (partial into {} (map handle-route)))))

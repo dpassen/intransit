@@ -21,12 +21,12 @@ Note: I recommend using [Environ](https://github.com/weavejester/environ) so as 
 (intransit/arrivals api-key :station-id station-id :stop-id stop-id)
 ;; or any other combination of these parameters
 
-(intransit/follow api-key run-number)
+(intransit/follow api-key {:run-number run-number})
 
 (intransit/positions api-key "g")
 (intransit/positions api-key :G)
 (intransit/positions api-key "g" :p "OrG" :RED)
-;; or any other exotic captializations
+;; or any other exotic capitalizations
 ```
 
 Obviously, repeating api-key all the time can get annoying ...
@@ -61,6 +61,6 @@ Or, using [Fidjet](https://github.com/aredington/fidjet):
 
 ## License
 
-Copyright © 2014 Derek Passen
+Copyright © 2016 Derek Passen
 
 Released under an MIT license.
