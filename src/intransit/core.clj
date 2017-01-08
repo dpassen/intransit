@@ -84,13 +84,9 @@
 
 (defn- handle-route
   [{:keys [train] :as route}]
-  (let [positions (flatten (vector train))]
-    (-> "@name"
-        keyword
-        route
-        str/capitalize
-        keyword
-        (vector (map handle-position positions)))))
+  (let [color     (-> "@name" keyword route str/capitalize keyword)
+        positions (cond-> train (map? train) list)]
+    [color (map handle-position positions)]))
 
 (defn positions
   [api-key & routes]
