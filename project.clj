@@ -1,4 +1,4 @@
-(defproject intransit "0.2.1"
+(defproject intransit "0.2.2-SNAPSHOT"
   :description "Clojure library for retrieving data from the CTA API"
   :url "https://github.com/dpassen1/intransit"
   :license {:name "MIT"
