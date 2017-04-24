@@ -36,7 +36,8 @@
                         :destNm :destination
                         :rn     :run-number})
       (update :arrival-time parse-cta-timestamp)
-      (update :run-number #(Long. %))))
+      (update :run-number #(Long. %))
+      (update :route keyword)))
 
 (defn arrivals
   [api-key & {:keys [station-id stop-id route max-results]}]
