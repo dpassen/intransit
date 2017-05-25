@@ -6,5 +6,5 @@
   :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:-options"]
   :dependencies [[org.clojure/clojure   "1.8.0"]
                  [org.clojure/data.json "0.2.6"]
-                 [clj-http              "3.5.0"]
-                 [clojure.java-time     "0.2.2"]])
+                 [clj-http              "3.6.0"]
+                 [clojure.java-time     "0.3.0"]])
