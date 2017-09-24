@@ -1,15 +1,17 @@
-# intransit
+# -*- coding: utf-8 -*-
+* intransit
 
 A Clojure library designed to aid in retrieving data from the CTA API
 
-## Latest version
-intransit is deployed to [Clojars](https://clojars.org)  
-[![Clojars Project](http://clojars.org/intransit/latest-version.svg)](http://clojars.org/intransit)
+** Latest version
+intransit is deployed to [[https://clojars.org][Clojars]]
 
-## Usage
-Note: I recommend using [Environ](https://github.com/weavejester/environ) so as not to store your api-key in your code
+[[http://clojars.org/intransit][http://clojars.org/intransit/latest-version.svg]]
 
-```clojure
+** Usage
+Note: I recommend using [[https://github.com/weavejester/environ][Environ]] so as not to store your api-key in your code
+
+#+BEGIN_SRC clojure
 (require '[intransit.core :as intransit])
 
 (intransit/arrivals api-key)
@@ -27,40 +29,40 @@ Note: I recommend using [Environ](https://github.com/weavejester/environ) so as 
 (intransit/positions api-key :G)
 (intransit/positions api-key "g" :p "OrG" :RED)
 ;; or any other exotic capitalizations
-```
+#+END_SRC
 
 Obviously, repeating api-key all the time can get annoying ...
 
 Consider using the following:
 
-```clojure
+#+BEGIN_SRC clojure
 (require '[intransit.core :as intransit])
 
 (def my-arrivals (partial intransit/arrivals api-key)
 (my-arrivals :station-id station-id)
 ;; etc.
-```
+#+END_SRC
 
-Or, using [Fidjet](https://github.com/aredington/fidjet):
-```clojure
+Or, using [[https://github.com/aredington/fidjet][Fidjet]]:
+#+BEGIN_SRC clojure
 (ns intransit.configured
   (:require [intransit.core]
             [fidjet.core :as f]))
 
 (f/remap-ns-with-arg intransit.core api-key)
-```
+#+END_SRC
 
-```clojure
+#+BEGIN_SRC clojure
 (require '[intransit.configured :as intransit])
 
 (intransit/with-api-key api-key
   (intransit/arrivals :station-id station-id)
   (intransit/follow run-number)
   (intransit/positions "g" :p "OrG" :RED))
-```
+#+END_SRC
 
-## License
+** License
 
-Copyright © 2016 Derek Passen
+Copyright © 2017 Derek Passen
 
 Released under an MIT license.
