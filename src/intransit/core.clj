@@ -6,7 +6,7 @@
    [clojure.string    :as str]
    [java-time]))
 
-(def ^:private json "JSON")
+(def ^:private output-type "JSON")
 
 (defn- parse-cta-timestamp
   [ts]
@@ -47,7 +47,7 @@
                                 :stpid      stop-id
                                 :rt         (cond-> route (some? route) name)
                                 :max        max-results
-                                :outputType json}})
+                                :outputType output-type}})
       parse-common
       (set/rename-keys {:eta :arrivals})
       (update :arrivals (partial map handle-arrival))))
@@ -66,7 +66,7 @@
   (-> "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx"
       (http/get {:query-params {:key        api-key
                                 :runnumber  run-number
-                                :outputType json}})
+                                :outputType output-type}})
       parse-common
       (dissoc :position)
       (set/rename-keys {:eta :follows})
@@ -94,7 +94,7 @@
   (-> "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx"
       (http/get {:query-params {:key        api-key
                                 :rt         (map name routes)
-                                :outputType json}})
+                                :outputType output-type}})
       parse-common
       (set/rename-keys {:route :routes})
       (update :routes (partial into {} (map handle-route)))))
