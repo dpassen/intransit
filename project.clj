@@ -4,7 +4,7 @@
   :license {:name "MIT"
             :url  "http://opensource.org/licenses/MIT"}
   :javac-options ["-target" "1.8" "-source" "1.8" "-Xlint:-options"]
-  :dependencies [[org.clojure/clojure   "1.9.0"]
+  :dependencies [[org.clojure/clojure   "1.10.0"]
                  [org.clojure/data.json "0.2.6"]
-                 [clj-http              "3.7.0"]
-                 [clojure.java-time     "0.3.1"]])
+                 [clj-http              "3.10.0"]
+                 [clojure.java-time     "0.3.2"]])
