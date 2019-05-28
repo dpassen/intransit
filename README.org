@@ -25,9 +25,9 @@ Note: I recommend using [[https://github.com/weavejester/environ][Environ]] so a
 
   (intransit/follow api-key {:run-number run-number})
 
-  (intransit/positions api-key "g")
-  (intransit/positions api-key :G)
-  (intransit/positions api-key "g" :p "OrG" :RED)
+  (intransit/positions api-key ["g"])
+  (intransit/positions api-key [:G])
+  (intransit/positions api-key ["g" :p "OrG" :RED])
   ;; or any other exotic capitalizations
 #+END_SRC
 
@@ -58,7 +58,7 @@ Or, using [[https://github.com/aredington/fidjet][Fidjet]]:
   (intransit/with-api-key api-key
     (intransit/arrivals {:station-id station-id})
     (intransit/follow run-number)
-    (intransit/positions "g" :p "OrG" :RED))
+    (intransit/positions ["g" :p "OrG" :RED]))
 #+END_SRC
 
 ** License

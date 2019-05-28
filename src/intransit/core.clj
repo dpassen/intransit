@@ -90,7 +90,7 @@
     [color (map handle-position positions)]))
 
 (defn positions
-  [api-key & routes]
+  [api-key routes]
   (-> "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx"
       (http/get {:query-params {:key        api-key
                                 :rt         (map name routes)
