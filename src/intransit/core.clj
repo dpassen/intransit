@@ -23,7 +23,7 @@
       (set/rename-keys {:errCd :error-code
                         :errNm :error-message
                         :tmst  :timestamp})
-      (update :error-code #(Long. %))
+      (update :error-code #(Long/parseLong %))
       (update :timestamp parse-cta-timestamp)))
 
 (defn- handle-arrival
@@ -36,7 +36,7 @@
                         :destNm :destination
                         :rn     :run-number})
       (update :arrival-time parse-cta-timestamp)
-      (update :run-number #(Long. %))
+      (update :run-number #(Long/parseLong %))
       (update :route keyword)))
 
 (defn arrivals
@@ -81,7 +81,7 @@
                         :destNm    :destination
                         :rn        :run-number})
       (update :arrival-time parse-cta-timestamp)
-      (update :run-number #(Long. %))))
+      (update :run-number #(Long/parseLong %))))
 
 (defn- handle-route
   [{:keys [train] :as route}]
