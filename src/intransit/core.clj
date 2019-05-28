@@ -40,6 +40,8 @@
       (update :route keyword)))
 
 (defn arrivals
+  "Returns an object containing a list of arrival predictions
+  for all platforms at a given train station"
   [api-key {:keys [station-id stop-id route max-results]}]
   (-> "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
       (http/get {:query-params {:key        api-key
@@ -62,6 +64,8 @@
       (update :arrival-time parse-cta-timestamp)))
 
 (defn follow
+  "Returns an object containing a list of arrival predictions for a given train
+  at all subsequent stations for which that train is estimated to arrive"
   [api-key {:keys [run-number]}]
   (-> "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx"
       (http/get {:query-params {:key        api-key
@@ -90,6 +94,8 @@
     [color (map handle-position positions)]))
 
 (defn positions
+  "Returns an object containing a list of in-service trains
+  and basic info and their locations for one or more specified routes"
   [api-key routes]
   (-> "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx"
       (http/get {:query-params {:key        api-key
