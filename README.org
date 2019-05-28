@@ -15,12 +15,12 @@ Note: I recommend using [[https://github.com/weavejester/environ][Environ]] so a
   (require '[intransit.core :as intransit])
 
   (intransit/arrivals api-key)
-  (intransit/arrivals api-key :max-results 50)
-  (intransit/arrivals api-key :station-id station-id)
-  (intransit/arrivals api-key :station-id station-id :route route)
-  (intransit/arrivals api-key :stop-id stop-id)
-  (intransit/arrivals api-key :stop-id stop-id :route route)
-  (intransit/arrivals api-key :station-id station-id :stop-id stop-id)
+  (intransit/arrivals api-key {:max-results 50})
+  (intransit/arrivals api-key {:station-id station-id})
+  (intransit/arrivals api-key {:station-id station-id :route route})
+  (intransit/arrivals api-key {:stop-id stop-id})
+  (intransit/arrivals api-key {:stop-id stop-id :route route})
+  (intransit/arrivals api-key {:station-id station-id :stop-id stop-id})
   ;; or any other combination of these parameters
 
   (intransit/follow api-key {:run-number run-number})
@@ -39,7 +39,7 @@ Consider using the following:
   (require '[intransit.core :as intransit])
 
   (def my-arrivals (partial intransit/arrivals api-key)
-  (my-arrivals :station-id station-id)
+  (my-arrivals {:station-id station-id})
   ;; etc.
 #+END_SRC
 
@@ -56,13 +56,13 @@ Or, using [[https://github.com/aredington/fidjet][Fidjet]]:
   (require '[intransit.configured :as intransit])
 
   (intransit/with-api-key api-key
-    (intransit/arrivals :station-id station-id)
+    (intransit/arrivals {:station-id station-id})
     (intransit/follow run-number)
     (intransit/positions "g" :p "OrG" :RED))
 #+END_SRC
 
 ** License
 
-Copyright © 2017 Derek Passen
+Copyright © 2019 Derek Passen
 
 Released under an MIT license.

@@ -6,7 +6,7 @@
    [clojure.string    :as str]
    [java-time]))
 
-(def ^:private output-type "JSON")
+(def ^:const ^:private output-type "JSON")
 
 (defn- parse-cta-timestamp
   [ts]
@@ -40,7 +40,7 @@
       (update :route keyword)))
 
 (defn arrivals
-  [api-key & {:keys [station-id stop-id route max-results]}]
+  [api-key {:keys [station-id stop-id route max-results]}]
   (-> "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
       (http/get {:query-params {:key        api-key
                                 :mapid      station-id
