@@ -1,12 +1,16 @@
 (ns intransit.core
   (:require
-   [clj-http.client   :as http]
-   [clojure.data.json :as json]
-   [clojure.set       :as set]
-   [clojure.string    :as str]
-   [java-time]))
+   [clj-http.client :as http]
+   [clojure.set :as set]
+   [clojure.string :as str]
+   [java-time]
+   [jsonista.core :as jsonista]))
 
 (def ^:const ^:private output-type "JSON")
+
+(def json-mapper
+  (jsonista/object-mapper
+   {:decode-key-fn keyword}))
 
 (defn- parse-cta-timestamp
   [ts]
@@ -17,7 +21,7 @@
 (defn- parse-common
   [{:keys [body]}]
   (-> body
-      (json/read-str :key-fn keyword)
+      (jsonista/read-value json-mapper)
       :ctatt
       (dissoc :TimeStamp)
       (set/rename-keys {:errCd :error-code
