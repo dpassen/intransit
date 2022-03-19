@@ -1,16 +1,13 @@
 (ns org.passen.intransit.core
   (:require
-   [clj-http.client :as http]
+   [clojure.data.json :as json]
    [clojure.set :as set]
    [clojure.string :as str]
+   [java-http-clj.core :as http]
    [java-time]
-   [jsonista.core :as jsonista]))
+   [lambdaisland.uri :as uri]))
 
 (def ^:const ^:private output-type "JSON")
-
-(def json-mapper
-  (jsonista/object-mapper
-   {:decode-key-fn keyword}))
 
 (defn- parse-cta-timestamp
   [ts]
@@ -21,7 +18,7 @@
 (defn- parse-common
   [{:keys [body]}]
   (-> body
-      (jsonista/read-value json-mapper)
+      (json/read-str :key-fn keyword)
       :ctatt
       (dissoc :TimeStamp)
       (set/rename-keys {:errCd :error-code
@@ -47,16 +44,19 @@
   "Returns an object containing a list of arrival predictions
   for all platforms at a given train station"
   [api-key {:keys [station-id stop-id route max-results]}]
-  (-> "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx"
-      (http/get {:query-params {:key        api-key
-                                :mapid      station-id
-                                :stpid      stop-id
-                                :rt         (cond-> route (some? route) name)
-                                :max        max-results
-                                :outputType output-type}})
-      parse-common
-      (set/rename-keys {:eta :arrivals})
-      (update :arrivals (partial map handle-arrival))))
+  (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx")
+        query-params (uri/map->query-string
+                      {:key        api-key
+                       :mapid      station-id
+                       :stpid      stop-id
+                       :rt         (cond-> route (some? route) name)
+                       :max        max-results
+                       :outputType output-type})
+        url          (assoc base-url :query query-params)]
+    (-> (http/get (str url))
+        parse-common
+        (set/rename-keys {:eta :arrivals})
+        (update :arrivals (partial map handle-arrival)))))
 
 (defn- handle-follow
   [follow]
@@ -71,14 +71,17 @@
   "Returns an object containing a list of arrival predictions for a given train
   at all subsequent stations for which that train is estimated to arrive"
   [api-key {:keys [run-number]}]
-  (-> "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx"
-      (http/get {:query-params {:key        api-key
-                                :runnumber  run-number
-                                :outputType output-type}})
-      parse-common
-      (dissoc :position)
-      (set/rename-keys {:eta :follows})
-      (update :follows (partial map handle-follow))))
+  (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx")
+        query-params (uri/map->query-string
+                      {:key        api-key
+                       :runnumber  run-number
+                       :outputType output-type})
+        url          (assoc base-url :query query-params)]
+    (-> (http/get (str url))
+        parse-common
+        (dissoc :position)
+        (set/rename-keys {:eta :follows})
+        (update :follows (partial map handle-follow)))))
 
 (defn- handle-position
   [position]
@@ -101,10 +104,13 @@
   "Returns an object containing a list of in-service trains
   and basic info and their locations for one or more specified routes"
   [api-key routes]
-  (-> "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx"
-      (http/get {:query-params {:key        api-key
-                                :rt         (map name routes)
-                                :outputType output-type}})
-      parse-common
-      (set/rename-keys {:route :routes})
-      (update :routes (partial into {} (map handle-route)))))
+  (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx")
+        query-params (uri/map->query-string
+                      {:key        api-key
+                       :rt         (map name routes)
+                       :outputType output-type})
+        url          (assoc base-url :query query-params)]
+    (-> (http/get (str url))
+        parse-common
+        (set/rename-keys {:route :routes})
+        (update :routes (partial into {} (map handle-route))))))
