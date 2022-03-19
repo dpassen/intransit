@@ -1,4 +1,4 @@
-(ns intransit.core
+(ns org.passen.intransit.core
   (:require
    [clj-http.client :as http]
    [clojure.set :as set]

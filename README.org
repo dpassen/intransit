@@ -9,10 +9,9 @@ intransit is deployed to [[https://clojars.org][Clojars]]
 [[http://clojars.org/intransit][http://clojars.org/intransit/latest-version.svg]]
 
 ** Usage
-Note: I recommend using [[https://github.com/weavejester/environ][Environ]] so as not to store your api-key in your code
 
 #+BEGIN_SRC clojure
-  (require '[intransit.core :as intransit])
+  (require '[org.passen.intransit.core :as intransit])
 
   (intransit/arrivals api-key)
   (intransit/arrivals api-key {:max-results 50})
@@ -31,38 +30,8 @@ Note: I recommend using [[https://github.com/weavejester/environ][Environ]] so a
   ;; or any other exotic capitalizations
 #+END_SRC
 
-Obviously, repeating api-key all the time can get annoying ...
-
-Consider using the following:
-
-#+BEGIN_SRC clojure
-  (require '[intransit.core :as intransit])
-
-  (def my-arrivals (partial intransit/arrivals api-key)
-  (my-arrivals {:station-id station-id})
-  ;; etc.
-#+END_SRC
-
-Or, using [[https://github.com/aredington/fidjet][Fidjet]]:
-#+BEGIN_SRC clojure
-  (ns intransit.configured
-    (:require [intransit.core]
-              [fidjet.core :as f]))
-
-  (f/remap-ns-with-arg intransit.core api-key)
-#+END_SRC
-
-#+BEGIN_SRC clojure
-  (require '[intransit.configured :as intransit])
-
-  (intransit/with-api-key api-key
-    (intransit/arrivals {:station-id station-id})
-    (intransit/follow run-number)
-    (intransit/positions ["g" :p "OrG" :RED]))
-#+END_SRC
-
 ** License
 
-Copyright © 2019 Derek Passen
+Copyright © 2022 Derek Passen
 
 Released under an MIT license.
