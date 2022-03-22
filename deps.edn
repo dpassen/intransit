@@ -1,7 +1,7 @@
 {:paths ["src"]
  :deps
  {org.clojure/clojure
-  {:mvn/version "1.10.3"}
+  {:mvn/version "1.11.0"}
   org.clojure/data.json
   {:mvn/version "2.4.0"}
   clojure.java-time/clojure.java-time
