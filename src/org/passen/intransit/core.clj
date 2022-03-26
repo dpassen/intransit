@@ -45,7 +45,7 @@
 (defn arrivals
   "Returns an object containing a list of arrival predictions
   for all platforms at a given train station"
-  [api-key {:keys [station-id stop-id route max-results]}]
+  [api-key & {:keys [station-id stop-id route max-results]}]
   (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx")
         query-params (uri/map->query-string
                       {:key        api-key
@@ -72,7 +72,7 @@
 (defn follow
   "Returns an object containing a list of arrival predictions for a given train
   at all subsequent stations for which that train is estimated to arrive"
-  [api-key {:keys [run-number]}]
+  [api-key & {:keys [run-number]}]
   (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx")
         query-params (uri/map->query-string
                       {:key        api-key
