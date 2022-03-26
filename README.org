@@ -6,7 +6,7 @@ A Clojure library designed to aid in retrieving data from the CTA API
 ** Latest version
 intransit is deployed to [[https://clojars.org][Clojars]]
 
-[[http://clojars.org/intransit][http://clojars.org/intransit/latest-version.svg]]
+[[https://clojars.org/org.passen/intransit][https://img.shields.io/clojars/v/org.passen/intransit.svg]]
 
 ** Usage
 
