@@ -13,7 +13,7 @@
  :aliases
  {:build
   {:deps
-   {io.github.seancorfield/build-clj
-    {:git/tag "v0.8.0"
-     :git/sha "9bd8b8a"}}
-   :ns-default build}}}
+   {io.github.liquidz/build.edn
+    {:git/tag "0.1.55"
+     :git/sha "2315904"}}
+   :ns-default build-edn.main}}}
