@@ -1,2 +1,2 @@
 {:lib     org.passen/intransit
- :version "0.3.{{commit-count}}"}
+ :version "0.3.{{git/commit-count}}"}
