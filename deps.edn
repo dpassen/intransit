@@ -4,8 +4,6 @@
   {:mvn/version "1.11.1"}
   org.clojure/data.json
   {:mvn/version "2.4.0"}
-  cljc.java-time/cljc.java-time
-  {:mvn/version "0.1.18"}
   java-http-clj/java-http-clj
   {:mvn/version "0.4.3"}
   lambdaisland/uri

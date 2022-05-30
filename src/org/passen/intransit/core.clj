@@ -1,21 +1,20 @@
 (ns org.passen.intransit.core
   (:require
-   [cljc.java-time.local-date-time :as local-date-time]
-   [cljc.java-time.zone-id :as zone-id]
-   [cljc.java-time.zoned-date-time :as zoned-date-time]
    [clojure.data.json :as json]
    [clojure.set :as set]
    [clojure.string :as str]
    [java-http-clj.core :as http]
-   [lambdaisland.uri :as uri]))
+   [lambdaisland.uri :as uri])
+  (:import
+   (java.time LocalDateTime ZoneId ZonedDateTime)))
 
 (def ^:const ^:private output-type "JSON")
 
 (defn- parse-cta-timestamp
   [ts]
-  (zoned-date-time/of
-   (local-date-time/parse ts)
-   (zone-id/of "America/Chicago")))
+  (ZonedDateTime/of
+   (LocalDateTime/parse ts)
+   (ZoneId/of "America/Chicago")))
 
 (defn- parse-common
   [{:keys [body]}]
