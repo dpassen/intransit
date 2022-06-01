@@ -1,6 +1,2 @@
 {:lib     org.passen/intransit
- :version "0.3.{{git/commit-count}}"
-  :scm
- {:connection          "scm:git:git://github.com/dpassen/intransit.git"
-  :developerConnection "scm:git:ssh://git@github.com/dpassen/intransit.git"
-  :url                 "https://github.com/dpassen/intransit"}}
+ :version "0.3.{{git/commit-count}}"}
