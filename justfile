@@ -2,7 +2,7 @@ default:
     @just --list
 
 lint:
-    @clj-kondo --parallel --lint src deps.edn build.edn
+    @rg -tclojure -tedn --files | xargs clj-kondo --parallel --lint
 
 install:
     @clojure -T:build install
