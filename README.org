@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 * intransit
+[[file:.github/workflows/test.yaml][https://github.com/dpassen/intransit/actions/workflows/test.yaml/badge.svg]]
 [[file:.github/workflows/lint.yaml][https://github.com/dpassen/intransit/actions/workflows/lint.yaml/badge.svg]]
 [[https://clojars.org/org.passen/intransit][https://img.shields.io/clojars/dt/org.passen/intransit.svg?color=opal]]
 
