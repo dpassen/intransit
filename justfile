@@ -1,6 +1,9 @@
 default:
     @just --list
 
+test:
+    @clojure -X:test
+
 lint:
     @rg -tclojure -tedn --files | xargs clj-kondo --parallel --lint
 
