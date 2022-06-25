@@ -5,8 +5,6 @@ pom.xml
 pom.xml.asc
 *.jar
 *.class
-/.lein-*
 /.nrepl-port
-*.swp
-.cider-repl-history
 .cpcache
+.clj-kondo/.cache
