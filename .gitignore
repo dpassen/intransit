@@ -6,5 +6,5 @@ pom.xml.asc
 *.jar
 *.class
 /.nrepl-port
-.cpcache
+.cpcache/
 .clj-kondo/.cache
