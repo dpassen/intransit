@@ -28,7 +28,9 @@
     lambdaisland/kaocha
     {:mvn/version "1.68.1059"}
     nubank/matcher-combinators
-    {:mvn/version "3.5.0"}}
+    {:mvn/version "3.5.0"}
+    org.slf4j/slf4j-nop
+    {:mvn/version "1.7.36"}}
    :extra-paths ["test"]
    :exec-fn     kaocha.runner/exec-fn}
   :watcher
