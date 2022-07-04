@@ -3,6 +3,7 @@
 [[file:.github/workflows/test.yaml][https://github.com/dpassen/intransit/actions/workflows/test.yaml/badge.svg]]
 [[file:.github/workflows/lint.yaml][https://github.com/dpassen/intransit/actions/workflows/lint.yaml/badge.svg]]
 [[file:.github/workflows/check.yaml][https://github.com/dpassen/intransit/actions/workflows/check.yaml/badge.svg]]
+[[file:.github/workflows/editorconfig.yaml][https://github.com/dpassen/intransit/actions/workflows/editorconfig.yaml/badge.svg]]
 [[https://clojars.org/org.passen/intransit][https://img.shields.io/clojars/dt/org.passen/intransit.svg?color=opal]]
 
 A Clojure library designed to aid in retrieving data from the CTA API
