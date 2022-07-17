@@ -30,7 +30,11 @@
               :arrival-time zoned-date-time?
               :route        keyword?
               :destination  string?
-              :run-number   int?}
+              :run-number   int?
+              :delayed?     boolean?
+              :fault?       boolean?
+              :approaching? boolean?
+              :scheduled?   boolean?}
              arrival))))))
 
 (deftest follow

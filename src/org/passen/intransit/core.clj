@@ -28,18 +28,30 @@
       (update :error-code parse-long)
       (update :timestamp parse-cta-timestamp)))
 
+(defn- parse-flag
+  [flag]
+  (not (zero? (parse-long flag))))
+
 (defn- handle-arrival
   [arrival]
   (-> arrival
-      (select-keys [:staNm :arrT :rt :destNm :rn])
+      (select-keys [:staNm :arrT :rt :destNm :rn :isDly :isFlt :isApp :isSch])
       (set/rename-keys {:staNm  :station
                         :arrT   :arrival-time
                         :rt     :route
                         :destNm :destination
-                        :rn     :run-number})
+                        :rn     :run-number
+                        :isDly  :delayed?
+                        :isFlt  :fault?
+                        :isApp  :approaching?
+                        :isSch  :scheduled?})
       (update :arrival-time parse-cta-timestamp)
       (update :run-number parse-long)
-      (update :route keyword)))
+      (update :route keyword)
+      (update :delayed? parse-flag)
+      (update :fault? parse-flag)
+      (update :approaching? parse-flag)
+      (update :scheduled? parse-flag)))
 
 (defn arrivals
   "Returns an object containing a list of arrival predictions
