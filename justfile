@@ -14,7 +14,7 @@ check:
     @clojure -M:check
 
 editorconfig:
-     @git ls-files | xargs editorconfig-checker
+    @git ls-files | xargs editorconfig-checker
 
 install:
     @clojure -T:build install
