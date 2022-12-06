@@ -1,4 +1,5 @@
 (ns org.passen.intransit.core
+  "Intransit is a library for retrieving data from the CTA API."
   (:require
    [clojure.data.json :as json]
    [clojure.set :as set]
