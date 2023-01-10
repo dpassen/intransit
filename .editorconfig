@@ -10,6 +10,3 @@ insert_final_newline = true
 
 [*.{clj,cljs,cljc}]
 indent_style = space
-
-[justfile]
-indent_style = space
