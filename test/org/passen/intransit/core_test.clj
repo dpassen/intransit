@@ -21,7 +21,8 @@
 
 (deftest arrivals
   (with-cassette ::arrivals [{:var #'http/get}]
-    (let [{:keys [arrivals] :as response} (intransit/arrivals fake-api-key :station-id 40800)]
+    (let [{:keys [arrivals] :as response}
+          (intransit/arrivals fake-api-key :station-id 40800)]
       (is (match? common-matcher response))
       (is (match? {:arrivals seq?} response))
       (doseq [arrival arrivals]
@@ -39,7 +40,8 @@
 
 (deftest follow
   (with-cassette ::follow [{:var #'http/get}]
-    (let [{:keys [follows] :as response} (intransit/follow fake-api-key :run-number 423)]
+    (let [{:keys [follows] :as response}
+          (intransit/follow fake-api-key :run-number 423)]
       (is (match? common-matcher response))
       (is (match? {:follows seq?} response))
       (doseq [follow follows]
@@ -51,7 +53,8 @@
 
 (deftest positions
   (with-cassette ::positions [{:var #'http/get}]
-    (let [{:keys [routes] :as response} (intransit/positions fake-api-key [:brn])]
+    (let [{:keys [routes] :as response}
+          (intransit/positions fake-api-key [:brn])]
       (is (match? common-matcher response))
       (is (match? {:routes map?} response))
       (doseq [route (:Brn routes)]

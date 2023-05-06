@@ -58,7 +58,8 @@
   "Returns an object containing a list of arrival predictions
   for all platforms at a given train station"
   [api-key & {:keys [station-id stop-id route max-results]}]
-  (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx")
+  (let [base-url     (uri/uri
+                      "http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx")
         query-params (uri/map->query-string
                       {:key        api-key
                        :mapid      station-id
@@ -85,7 +86,8 @@
   "Returns an object containing a list of arrival predictions for a given train
   at all subsequent stations for which that train is estimated to arrive"
   [api-key & {:keys [run-number]}]
-  (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx")
+  (let [base-url     (uri/uri
+                      "http://lapi.transitchicago.com/api/1.0/ttfollow.aspx")
         query-params (uri/map->query-string
                       {:key        api-key
                        :runnumber  run-number
@@ -118,7 +120,8 @@
   "Returns an object containing a list of in-service trains
   and basic info and their locations for one or more specified routes"
   [api-key routes]
-  (let [base-url     (uri/uri "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx")
+  (let [base-url     (uri/uri
+                      "http://lapi.transitchicago.com/api/1.0/ttpositions.aspx")
         query-params (uri/map->query-string
                       {:key        api-key
                        :rt         (map name routes)
