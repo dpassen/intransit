@@ -7,7 +7,7 @@
   java-http-clj/java-http-clj
   {:mvn/version "0.4.3"}
   lambdaisland/uri
-  {:mvn/version "1.15.125"}}
+  {:mvn/version "1.16.134"}}
  :aliases
  {:build
   {:deps
