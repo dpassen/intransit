@@ -47,6 +47,6 @@ intransit is deployed to [[https://clojars.org][Clojars]]
 #+END_SRC
 
 ** License
-Copyright © 2016-2023 Derek Passen
+Copyright © 2016-2024 Derek Passen
 
 Released under an MIT license.
