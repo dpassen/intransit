@@ -1,7 +1,7 @@
 {:paths ["src"]
  :deps
  {org.clojure/clojure
-  {:mvn/version "1.11.1"}
+  {:mvn/version "1.11.2"}
   org.clojure/data.json
   {:mvn/version "2.5.0"}
   java-http-clj/java-http-clj
