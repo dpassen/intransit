@@ -1,7 +1,7 @@
 (ns org.passen.intransit.core-test
   (:require
+   [babashka.http-client :as http]
    [clojure.test :refer [deftest is]]
-   [java-http-clj.core :as http]
    [matcher-combinators.test]
    [org.passen.intransit.core :as intransit]
    [vcr-clj.core :refer [with-cassette]])
