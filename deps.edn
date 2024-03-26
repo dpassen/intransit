@@ -30,7 +30,7 @@
    {com.gfredericks/vcr-clj
     {:mvn/version "0.4.22"}
     lambdaisland/kaocha
-    {:mvn/version "1.87.1366"}
+    {:mvn/version "1.88.1376"}
     nubank/matcher-combinators
     {:mvn/version "3.9.1"}}
    :extra-paths ["test"]
