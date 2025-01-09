@@ -2,7 +2,7 @@
   (:require
    [babashka.http-client :as http]
    [clojure.test :refer [deftest is]]
-   [matcher-combinators.test]
+   [matcher-combinators.test :refer [match?]]
    [org.passen.intransit.core :as intransit]
    [vcr-clj.core :refer [with-cassette]])
   (:import
