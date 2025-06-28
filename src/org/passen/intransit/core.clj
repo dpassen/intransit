@@ -20,7 +20,7 @@
   [{:keys [body]}]
   (-> body
       (json/read-str :key-fn keyword)
-      :ctatt
+      (get :ctatt)
       (dissoc :TimeStamp)
       (set/rename-keys {:errCd :error-code
                         :errNm :error-message
@@ -65,7 +65,7 @@
                         :rt         (cond-> route (some? route) name)
                         :max        max-results
                         :outputType output-type}})
-        parse-common
+        (parse-common)
         (set/rename-keys {:eta :arrivals})
         (update :arrivals (partial map handle-arrival)))))
 
@@ -87,7 +87,7 @@
                        {:key        api-key
                         :runnumber  run-number
                         :outputType output-type}})
-        parse-common
+        (parse-common)
         (dissoc :position)
         (set/rename-keys {:eta :follows})
         (update :follows (partial map handle-follow)))))
@@ -105,8 +105,9 @@
 
 (defn- handle-route
   [{:keys [train] :as route}]
-  (let [color     (-> "@name" keyword route str/capitalize keyword)
-        positions (cond-> train (map? train) list)]
+  (let [route-name (keyword "@name")
+        color      (-> route (get route-name) (str/capitalize) (keyword))
+        positions  (cond-> train (map? train) list)]
     [color (map handle-position positions)]))
 
 (defn positions
@@ -118,6 +119,6 @@
                        {:key        api-key
                         :rt         (map name routes)
                         :outputType output-type}})
-        parse-common
+        (parse-common)
         (set/rename-keys {:route :routes})
         (update :routes (partial into {} (map handle-route))))))
