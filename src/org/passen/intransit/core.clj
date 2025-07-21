@@ -2,7 +2,7 @@
   "Intransit is a library for retrieving data from the CTA API."
   (:require
    [babashka.http-client :as http]
-   [clojure.data.json :as json]
+   [babashka.json :as json]
    [clojure.set :as set]
    [clojure.string :as str])
   (:import
@@ -19,7 +19,7 @@
 (defn- parse-common
   [{:keys [body]}]
   (-> body
-      (json/read-str :key-fn keyword)
+      (json/read-str)
       (get :ctatt)
       (dissoc :TimeStamp)
       (set/rename-keys {:errCd :error-code
