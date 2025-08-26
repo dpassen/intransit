@@ -1,7 +1,7 @@
 {:paths ["src"]
  :deps
  {org.clojure/clojure
-  {:mvn/version "1.12.1"}
+  {:mvn/version "1.12.2"}
   org.babashka/http-client
   {:mvn/version "0.4.23"}
   org.babashka/json
