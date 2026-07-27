@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 * intransit
+[[https://raw.githubusercontent.com/dpassen/intransit/main/assets/intransit-banner.svg]]
+
 [[file:.github/workflows/test.yaml][https://github.com/dpassen/intransit/actions/workflows/test.yaml/badge.svg]]
 [[file:.github/workflows/lint.yaml][https://github.com/dpassen/intransit/actions/workflows/lint.yaml/badge.svg]]
 [[file:.github/workflows/check.yaml][https://github.com/dpassen/intransit/actions/workflows/check.yaml/badge.svg]]
